@@ -1,5 +1,6 @@
 import express, {Application, Request, Response} from 'express';
 
+import {router as authRouter} from './routes/auth.route';
 import {router as tenantRouter} from './routes/tenant.route';
 import {router as providerRouter} from './routes/provider.route';
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded({extended: true}));
 
 app.use('/api/v1/tenants', tenantRouter);
 app.use('/api/v1/providers', providerRouter);
+app.use('/api/v1', authRouter);
 
 // app.get('/', async (req: Request, res: Response): Promise<Response> => {
 //   return res.status(200).send({
