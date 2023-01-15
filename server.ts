@@ -27,7 +27,7 @@ app.use(`/api`, authRouter);
 
 try {
   app.listen(port, (): void => {
-    console.log(`Connected successfully on port ${port}`);
+    console.log(`Connected successfully on http://localhost:${port}`);
   });
 } catch (error: any) {
   console.error(`Error: ${error.message}`);
