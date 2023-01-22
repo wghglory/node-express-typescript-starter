@@ -1,14 +1,13 @@
 import {faker} from '@faker-js/faker';
+import {Tenant} from '@/models//tenant';
 
-// import {Tenant} from '../../models';
-
-const tenants: any[] = [
+const tenants: Tenant[] = [
   {
     id: 'acme',
     name: 'ACME',
-    fullName: 'ACME full name',
     enabled: true,
-    lastModifiedDate: '2022-01-01',
+    fullName: 'ACME full name',
+    lastModifiedDate: new Date('2022-01-01'),
   },
 ];
 const data = new Array(45).fill(1).map((i) => {

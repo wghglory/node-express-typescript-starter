@@ -1,14 +1,8 @@
-import express, {Application, Request, Response} from 'express';
+import express from 'express';
 
 import tenants from '../data/tenants.data';
 
-export const router = express.Router();
-
-// middleware that is specific to this router
-router.use((req, res, next) => {
-  // console.log('Time: ', Date.now());
-  next();
-});
+const router = express.Router();
 
 router.get('/', (req, res) => {
   const token = req.headers.authorization;
@@ -38,5 +32,15 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const id = req.params.id;
-  res.send({name: `Tenant ${id}`});
+  const found = tenants.find(t => t.id === id);
+
+  if (found) {
+    res.send(found);
+  } else {
+    res.status(404).json({
+      message: 'No tenant found',
+    });
+  }
 });
+
+export default router;

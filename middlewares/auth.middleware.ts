@@ -1,12 +1,10 @@
 import {NextFunction, Request, Response} from 'express';
 
-import {X_VCLOUD_AUTHORIZATION} from '../const';
-
 export default function (req: Request, res: Response, next: NextFunction) {
   try {
-    const authorization = req.headers[X_VCLOUD_AUTHORIZATION];
-    // const {authorization} = req.headers;
-
+    // const authorization = req.headers[X_VCLOUD_AUTHORIZATION];
+    const {authorization} = req.headers;
+    // login request doesn't need to check X_VCLOUD_AUTHORIZATION, pass; other request need to check token
     if (req.method === 'POST' && req.url.includes('/api/sessions')) {
       next();
       return;

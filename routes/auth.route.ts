@@ -1,13 +1,14 @@
+import {X_VCLOUD_AUTHORIZATION} from '../const';
 import {faker} from '@faker-js/faker';
 import express, {Application, Request, Response} from 'express';
-import {X_VCLOUD_AUTHORIZATION} from '../const';
+import {VcdSession} from '@/models//user';
 
-// import users from '../data/users.data';
 import users from '../data/session.data';
 
-export const router = express.Router();
+const router = express.Router();
 
-let currentUser: any | null = null;
+const tokenPrefix = 'Bearer ';
+let currentUser: VcdSession | undefined;
 let token: string = '';
 
 // middleware that is specific to this router
@@ -31,10 +32,11 @@ router.post('/sessions', (req: Request, res: Response) => {
   const foundUser = users.find((u) => u.user === username);
   if (foundUser) {
     currentUser = foundUser;
-    token = 'mock_auth_token';
+    token = `${tokenPrefix}${foundUser.user}`;
 
     res.set('Access-Control-Expose-Headers', X_VCLOUD_AUTHORIZATION);
-    res.setHeader(X_VCLOUD_AUTHORIZATION, token);
+    res.setHeader(X_VCLOUD_AUTHORIZATION, foundUser.user);
+    res.setHeader('jwt', foundUser.user);
     res.json(foundUser);
     // res.json({...foundUser, token: faker.datatype.uuid()});
   } else {
@@ -45,19 +47,36 @@ router.post('/sessions', (req: Request, res: Response) => {
 });
 
 router.delete('/session', (req, res) => {
-  currentUser = null;
+  currentUser = undefined;
   token = '';
 
   res.status(204).send();
 });
 
 router.get('/session', (req: Request, res: Response) => {
-  const token = req.headers[X_VCLOUD_AUTHORIZATION];
-  // const token = req.headers.authorization;
+  // const token = req.headers[X_VCLOUD_AUTHORIZATION] as string;
+  const token = req.headers.authorization;
 
-  if (currentUser && token) {
-    res.send(currentUser);
+  if (!token) {
+    return res.status(401).json({message: 'Not Authorized'});
+  }
+
+  if (currentUser) {
+    return res.send(currentUser);
+  }
+
+  currentUser = getUserByToken(token);
+  if (currentUser) {
+    return res.send(currentUser);
   } else {
-    res.status(401).json({message: 'Not Authorized'});
+    res.status(401).json({message: `No user found with this token ${token}`});
   }
 });
+
+function getUserByToken(token: string) {
+  const username = token.replace(tokenPrefix, '');
+  const foundUser = users.find((u) => u.user === username);
+  return foundUser;
+}
+
+export default router;

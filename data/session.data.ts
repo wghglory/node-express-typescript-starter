@@ -1,8 +1,23 @@
-// import {VcdSession} from '../../core/models/user';
+import {VcdSession} from '@/models//user';
 
-const users: any[] = [
+/**
+ * several valid users to login
+ *
+ * Provider
+ * admin: admin@system | System Administrator
+ * pa: pa@system | System Administrator
+ *
+ * Tenant
+ * ta: ta@acme | Organization Administrator
+ *
+ * tu with different 'roles':
+ *    tu@acme | Organization User
+ *    tu1@org1 | Harbor User
+ *    rachelw2@acme | harbor-viewer  to test when `roles` is not included in FE auth
+ */
+const users: VcdSession[] = [
   {
-    userId: 'urn:vcloud:user:241dc61d-2e7f-4480-bba4-22c59fcc77cd',
+    userId: 'urn:vcloud:user:admin-user-id',
     user: 'admin',
     roles: 'System Administrator',
     org: 'System',
@@ -15,7 +30,7 @@ const users: any[] = [
     authorizedLocations: {location: []},
   },
   {
-    userId: 'urn:vcloud:user:241dc61d-2e7f-4480-bba4-22c59fcc77cd',
+    userId: 'urn:vcloud:user:pa-user-id',
     user: 'pa',
     roles: 'System Administrator',
     org: 'System',
@@ -28,7 +43,7 @@ const users: any[] = [
     authorizedLocations: {location: []},
   },
   {
-    userId: 'urn:vcloud:user:241dc61d-2e7f-4480-bba4-22c59fcc77cd',
+    userId: 'urn:vcloud:user:ta-admin-user-id',
     user: 'ta',
     roles: 'Organization Administrator',
     org: 'acme',
@@ -41,7 +56,7 @@ const users: any[] = [
     authorizedLocations: {location: []},
   },
   {
-    userId: 'urn:vcloud:user:241dc61d-2e7f-4480-bba4-22c59fcc77cd',
+    userId: 'urn:vcloud:user:tu-user-id',
     user: 'tu',
     roles: 'Organization User',
     org: 'acme',
