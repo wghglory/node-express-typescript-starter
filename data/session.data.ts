@@ -1,5 +1,4 @@
-import {VcdSession} from '@/models//user';
-
+import { VcdSession } from '@/models/user';
 /**
  * several valid users to login
  *
@@ -27,7 +26,7 @@ const users: VcdSession[] = [
     type: '',
     locationId: '',
     vCloudExtension: [],
-    authorizedLocations: {location: []},
+    authorizedLocations: { location: [] },
   },
   {
     userId: 'urn:vcloud:user:pa-user-id',
@@ -40,7 +39,7 @@ const users: VcdSession[] = [
     type: '',
     locationId: '',
     vCloudExtension: [],
-    authorizedLocations: {location: []},
+    authorizedLocations: { location: [] },
   },
   {
     userId: 'urn:vcloud:user:ta-admin-user-id',
@@ -53,7 +52,7 @@ const users: VcdSession[] = [
     type: '',
     locationId: '',
     vCloudExtension: [],
-    authorizedLocations: {location: []},
+    authorizedLocations: { location: [] },
   },
   {
     userId: 'urn:vcloud:user:tu-user-id',
@@ -66,8 +65,8 @@ const users: VcdSession[] = [
     type: '',
     locationId: '',
     vCloudExtension: [],
-    authorizedLocations: {location: []},
+    authorizedLocations: { location: [] },
   },
 ];
 
-export default users;
+export { users };

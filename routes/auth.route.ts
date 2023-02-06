@@ -1,23 +1,23 @@
-import {X_VCLOUD_AUTHORIZATION} from '../const';
-import {faker} from '@faker-js/faker';
-import express, {Application, Request, Response} from 'express';
-import {VcdSession} from '@/models//user';
+import { X_VCLOUD_AUTHORIZATION } from '../const';
+import { faker } from '@faker-js/faker';
+import express, { Application, Request, Response } from 'express';
+import { VcdSession } from '@/models/user';
 
-import users from '../data/session.data';
+import { users } from '../data/session.data';
 
-const router = express.Router();
+export const authRouter = express.Router();
 
 const tokenPrefix = 'Bearer ';
 let currentUser: VcdSession | undefined;
-let token: string = '';
+let token = '';
 
 // middleware that is specific to this router
-router.use((req, res, next) => {
+authRouter.use((req, res, next) => {
   // console.log('Time: ', Date.now());
   next();
 });
 
-router.post('/sessions', (req: Request, res: Response) => {
+authRouter.post('/sessions', (req: Request, res: Response) => {
   const authorization = req.headers.authorization;
 
   if (authorization === undefined) {
@@ -29,7 +29,7 @@ router.post('/sessions', (req: Request, res: Response) => {
   const username = decoded.split(':')[0];
   const password = decoded.split(':')[1];
 
-  const foundUser = users.find((u) => u.user === username);
+  const foundUser = users.find(u => u.user === username);
   if (foundUser) {
     currentUser = foundUser;
     token = `${tokenPrefix}${foundUser.user}`;
@@ -46,19 +46,19 @@ router.post('/sessions', (req: Request, res: Response) => {
   }
 });
 
-router.delete('/session', (req, res) => {
+authRouter.delete('/session', (req, res) => {
   currentUser = undefined;
   token = '';
 
   res.status(204).send();
 });
 
-router.get('/session', (req: Request, res: Response) => {
+authRouter.get('/session', (req: Request, res: Response) => {
   // const token = req.headers[X_VCLOUD_AUTHORIZATION] as string;
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(401).json({message: 'Not Authorized'});
+    return res.status(401).json({ message: 'Not Authorized' });
   }
 
   if (currentUser) {
@@ -67,16 +67,14 @@ router.get('/session', (req: Request, res: Response) => {
 
   currentUser = getUserByToken(token);
   if (currentUser) {
-    return res.send(currentUser);
+    res.send(currentUser);
   } else {
-    res.status(401).json({message: `No user found with this token ${token}`});
+    res.status(401).json({ message: `No user found with this token ${token}` });
   }
 });
 
 function getUserByToken(token: string) {
   const username = token.replace(tokenPrefix, '');
-  const foundUser = users.find((u) => u.user === username);
+  const foundUser = users.find(u => u.user === username);
   return foundUser;
 }
-
-export default router;

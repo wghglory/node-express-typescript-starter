@@ -3,17 +3,16 @@ import express from 'express';
 
 import { task } from '../data/task.data';
 
-const router = express.Router();
+export const taskRouter = express.Router();
 
 /**
  * Get task by id after calling a behavior invocation
  */
-router.get('/:id', (req, res) => {
+taskRouter.get('/:id', (req, res) => {
   const id = req.params.id;
   const status = <'success' | 'error'>req.query.status;
   const message = <string | undefined>req.query.message;
 
-  const projectName = req.query.projectName as string;
   const entityId = req.query.entityId as string;
 
   switch (id) {
@@ -41,5 +40,3 @@ router.get('/:id', (req, res) => {
       break;
   }
 });
-
-export default router;

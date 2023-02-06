@@ -1,10 +1,10 @@
 import express from 'express';
 
-import tenants from '../data/tenants.data';
+import { tenants } from '../data/tenants.data';
 
-const router = express.Router();
+export const tenantRouter = express.Router();
 
-router.get('/', (req, res) => {
+tenantRouter.get('/', (req, res) => {
   const token = req.headers.authorization;
   const limit = Number(req.query.limit) || 1000;
   const offset = Number(req.query.offset) || 0;
@@ -30,7 +30,7 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/:id', (req, res) => {
+tenantRouter.get('/:id', (req, res) => {
   const id = req.params.id;
   const found = tenants.find(t => t.id === id);
 
@@ -42,5 +42,3 @@ router.get('/:id', (req, res) => {
     });
   }
 });
-
-export default router;
